@@ -1,0 +1,17 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %} {{ data.name }}{% endblock title %}
+{% block content %}
+    <section id="products">
+        <h3>ID: {{ data.id }}</h3><br>
+        <img src="{{ data.get_photo_url }}" alt="{{ data.name }}" style="max-width: 100px; max-height: 100px;" />
+        <br>
+        <h3>Название товара: {{ data.name }}</h3><br>
+        <h3>Цена: {{ data.price }}</h3><br>
+        <h3>Описание: {{ data.description }}</h3><br>
+        <h3>Остаток на складе: {{ data.current_quantity }}</h3><br>
+        <p><a href="{% url 'product_delete' data.id %}">Удалить товар</a></p>
+        <hr/>
+        <p><a href="{% url 'products_list' %}">Назад к списку товаров</a></p>
+    </section>
+{% endblock content %}

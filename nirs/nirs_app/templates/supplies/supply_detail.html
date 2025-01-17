@@ -1,0 +1,18 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Детали поставки{% endblock title %}
+{% block content %}
+    <section id="products">
+        <h2>Детали поставки</h2>
+        <p><strong>ID:</strong> {{ supply.id }}</p>
+        <p><strong>Дата:</strong> {{ supply.supply_date }}</p>
+         <p><strong>Продавец:</strong> {{ supply.seller }}</p>
+        <h3>Сырье</h3>
+       <ul>
+        {% for form in formset %}
+           <li>{{ form.instance.material }} x {{ form.instance.quantity }}</li>
+         {% endfor %}
+       </ul>
+        <a href="{% url 'supplies_list' %}">Вернуться к списку</a>
+    </section>
+{% endblock content %}

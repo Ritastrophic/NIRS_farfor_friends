@@ -1,0 +1,17 @@
+{% extends "index.html" %}
+{% block content %}
+<section id="products">
+    <h2>Удаление аккаунта клиента</h2>
+    <form method="post">
+        {% csrf_token %}
+        <p>Вы уверены, что хотите удалить свой аккаунт?</p>
+        <input type = "submit" value="Да">
+        <input type="button" value="Нет" onclick="redirectToPersonal()">
+            <script>
+                function redirectToPersonal() {
+                    window.location.href = "{% url 'user_personal' %}";
+                }
+            </script>
+    </form>
+</section>
+{% endblock content %}

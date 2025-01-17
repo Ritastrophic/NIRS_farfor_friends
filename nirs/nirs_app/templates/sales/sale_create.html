@@ -1,0 +1,21 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Добавление продажи{% endblock title %}
+{% block content %}
+    <section id="products">
+        <form method = "post">
+            {% csrf_token %}
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {{ form.as_p }}
+            <input type = "submit" value = "Подтвердить">
+        </form>
+        <hr/>
+<p><a href="{% url 'sales_list' %}">Назад к журналу продаж</a></p>
+    </section>
+{% endblock content %}

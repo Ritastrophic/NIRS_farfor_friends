@@ -1,0 +1,12 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Детали расписания{% endblock title %}
+{% block content %}
+    <section id="products">
+        <h2>Детали расписания</h2>
+        <p><strong>Мастер:</strong> {{ master_schedule.master }}</p>
+        <p><strong>Начало смены:</strong> {{ master_schedule.schedule.start_time }}</p>
+        <p><strong>Конец смены:</strong> {{ master_schedule.schedule.end_time }}</p>
+        <p><a href="{% url 'master_schedules' %}">Назад к списку расписаний</a></p>
+    </section>
+{% endblock content %}

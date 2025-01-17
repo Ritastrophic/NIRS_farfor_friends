@@ -1,0 +1,94 @@
+{% extends "index.html" %}
+{% block header %}
+{% if user.is_authenticated %}
+     {% if role == 'клиента' and client %}
+          <a href="{% url 'user_cart' %}">Корзина</a>
+          <a href="{% url 'booking_view' %}">Мои заявки</a>
+     {% endif %}
+{% endif %}
+{% endblock header %}
+{% block sidebar %}
+     {% if user.is_authenticated %}
+          {% if role == 'клиента'%}
+          <p>
+               <p><a href="{% url 'products' %}">Наши товары</a></p>
+               <p><a href="{% url 'services' %}">Наши услуги</a></p>
+               <p><a href="{% url 'workshops' %}">Наши мастерские</a></p>
+               <p><a href="{% url 'masters' %}">Наши мастера</a></p>
+          </p>
+          {% elif role == 'мастера'%}
+          <p>
+               <a href="{% url 'master_main' %}">Главная мастера</a>
+               <hr>
+               <p><a href="{% url 'orders_list' %}">Журнал заказов</a></p>
+               <p><a href="{% url 'master_schedule' %}">Мое расписание</a></p>
+          </p>
+          {% elif role == 'продавца' %}
+          <p>
+               <p><a href="{% url 'seller_main' %}">Главная продавца</a></p>
+               <hr>
+               <p><a href="{% url 'seller_schedule' %}">Мой график работы</a></p>
+               <p><a href="{% url 'products' %}">Товары</a></p>
+               <p><a href="{% url 'materials_list' %}">Каталог сырья</a></p>
+               <p><a href="{% url 'sales_list' %}">Журнал продаж</a></p>
+               <p><a href="{% url 'supplies_list' %}">Журнал поставок</a></p>
+          </p>
+          {% elif user.is_superuser %}
+          <p>
+               <a href="{% url 'admin_main' %}">Главная админа</a>
+               <hr>
+               <p><a href="{% url 'products_list' %}">Каталог товаров</a></p>
+               <p><a href="{% url 'services_list' %}">Каталог услуг</a></p>
+               <p><a href="{% url 'workshops_list' %}">Каталог мастерских</a></p>
+               <p><a href="{% url 'materials_list' %}">Каталог сырья</a></p>
+               <p><a href="{% url 'sales_list' %}">Журнал продаж</a></p>
+               <p><a href="{% url 'orders_list' %}">Журнал заказов</a></p>
+               <p><a href="{% url 'supplies_list' %}">Журнал поставок</a></p>
+               <p><a href="{% url 'masters_list' %}">Каталог мастеров</a></p>
+               <p><a href="{% url 'clients_list' %}">Каталог клиентов</a></p>
+               <p><a href="{% url 'sellers_list' %}">Каталог продавцов</a></p>
+               <p><a href="{% url 'seller_schedules' %}">График работы продавцов</a></p>
+               <p><a href="{% url 'master_schedules' %}">График работы мастеров</a></p>
+               <p><a href="{% url 'stats' %}">Статистика</a></p>
+          </p>
+          {% endif %}
+          {% else %}
+          <p>
+               <p><a href="{% url 'products' %}">Наши товары</a></p>
+               <p><a href="{% url 'services' %}">Наши услуги</a></p>
+               <p><a href="{% url 'workshops' %}">Наши мастерские</a></p>
+               <p><a href="{% url 'masters' %}">Наши мастера</a></p>
+          </p>
+     {% endif %}
+{% endblock sidebar %}
+{% block content %}
+<section id="products">
+    <h2>Персональная информация {{ role }}</h2>
+    <p>Имя: {{ user.first_name }}</p>
+    <p>Фамилия: {{ user.last_name }}</p>
+    <p>Email: {{ user.email }}</p>
+    <p>Номер телефона: {{ user.phone_number }}</p>
+
+    {% if role == 'клиента' and client %}
+         <p>Дата рождения: {{ client.birth_date }}</p>
+          <a href="{% url 'my_purchases' %}">Мои покупки</a><br>
+          <a href="{% url 'my_orders' %}">Мои заказы</a><br>
+          <hr>
+    {% endif %}
+
+    {% if role == 'мастера' and master %}
+         <p>Опыт работы с: {{ master.experience_since }}</p>
+         <img src="{{ master.get_photo_url }}" alt="{{ master.get_photo_url }}" style="align-items: center;">
+         <br>
+    {% endif %}
+    
+    <a href="{% url 'user_update' %}">Изменить профиль</a><br>
+    <hr>
+    {% if role == 'клиента' and client %}
+      <a href="{% url 'user_delete' %}">Удалить аккаунт</a><br>
+      <hr>
+    {% endif %}
+    <a href="{% url 'logout' %}">Выйти из аккаунта</a>
+
+</section>
+{% endblock content %}

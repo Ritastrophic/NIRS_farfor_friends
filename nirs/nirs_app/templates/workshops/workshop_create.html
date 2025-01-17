@@ -1,0 +1,14 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Добавление мастерской{% endblock title %}
+{% block content %}
+    <section id="products">
+        <form method = "post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type = "submit" value = "Подтвердить">
+        </form>
+        <hr/>
+        <p><a href="{% url 'workshops_list' %}">Назад к списку мастерских</a></p>
+    </section>
+{% endblock content %}

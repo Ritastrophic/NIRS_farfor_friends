@@ -1,0 +1,36 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Мастера{% endblock title %}
+{% block content %}
+    <section id="products">
+        <h2>Список мастеров</h2>
+        <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">№</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">ID</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Имя</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Фамилия</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">E-mail</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Телефон</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in dataset %}
+                <tr>
+                    <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ forloop.counter }}</td>
+                    
+                    <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;"><a href="{% url 'master_detail_admin' data.id %}">{{ data.id }}</a></td>
+                    <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ data.user.first_name }}</td>
+                    <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ data.user.last_name }}</td>
+                    <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ data.user.email }}</td>
+                    <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ data.user.phone_number }}</td>
+                    <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;"><a href="{% url 'master_delete' data.id %}">Удалить</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href = "{% url 'master_create' %}">Добавить мастера</a>
+    </section>
+{% endblock content %}

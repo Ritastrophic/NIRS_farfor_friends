@@ -1,0 +1,22 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Обновление данных профиля{% endblock title %}
+{% block content %}
+<section id="products">
+    {% if form %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h3>Данные {{ role|default:"пользователя" }}</h3>
+        {{ form.as_p }}
+        <button type="submit">Сохранить</button>
+    </form>
+{% else %}
+    <form method="post">
+        {% csrf_token %}
+        <h3>Данные пользователя</h3>
+        {{ user_form.as_p }}
+        <button type="submit">Сохранить</button>
+    </form>
+{% endif %}
+</section>
+{% endblock content %}

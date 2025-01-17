@@ -1,0 +1,14 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Обновление услуги{% endblock title %}
+{% block content %}
+    <section id="products">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Обновить">
+        </form>
+        <hr/>
+<p><a href="{% url 'services_list' %}">Назад к списку услуг</a></p>
+    </section>
+{% endblock content %}

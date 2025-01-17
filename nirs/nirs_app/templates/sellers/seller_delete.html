@@ -1,0 +1,19 @@
+{% extends "personal/user_personal.html" %}
+{% block content %}
+<section id="products">
+    <h2>Удаление продавца</h2>
+<form method="post">
+    {% csrf_token %}
+    <p>Подтвердите удаление продавца {{ seller.user.first_name }} {{ seller.user.last_name }}</p>
+    <input type = "submit" value="Да">
+    <input type="button" value="Нет" onclick="redirectToSellers()">
+        <script>
+            function redirectToSellers() {
+                window.location.href = "{% url 'sellers_list' %}";
+            }
+        </script>
+</form>
+<hr/>
+<p><a href="{% url 'sellers_list' %}">Назад к списку продавцов</a></p>
+</section>
+{% endblock %}

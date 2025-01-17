@@ -1,0 +1,42 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+
+{% block title %}Детали продажи № {{ sale.id }}{% endblock title %}
+
+{% block content %}
+    <section id="products">
+        <h2>Детали продажи № {{ sale.id }}</h2>
+
+        <div class="card mb-3">
+              <div class="card-header">Информация о продаже</div>
+             <div class="card-body">
+                <p><strong>ID продажи:</strong> {{ sale.id }}</p>
+                 <p><strong>ID клиента:</strong> {{ sale.client.id }}</p>
+                <p><strong>ID продавца:</strong> {{ sale.seller.id }}</p>
+               <p><strong>Дата продажи:</strong> {{ sale.purchase_date }}</p>
+               <p><strong>Общая сумма продажи:</strong> {{ sale.total_sale_price }}</p>
+                <p><strong>Оплачено:</strong> {{ sale.is_paid }}</p>
+                  <p><strong>Собрано:</strong> {{ sale.is_gathered }}</p>
+                <p><strong>Выдано:</strong> {{ sale.is_given }}</p>
+            </div>
+         </div>
+           <div class="card mb-3">
+            <div class="card-header">Товары в продаже</div>
+               <div class="card-body">
+                   <ul>
+                         {% for sold_product in sold_products %}
+                              <li>
+                                  <strong>ID товара:</strong> {{ sold_product.product.id }}<br>
+                                  <strong>Количество:</strong> {{ sold_product.quantity }}<br>
+                                 <strong>Цена за единицу:</strong> {{ sold_product.product.price }}<br>
+                                   <strong>Итоговая цена:</strong> {{ sold_product.product_total_price }}<br>
+                           </li>
+                      {% empty %}
+                         <li>Нет товаров</li>
+                    {% endfor %}
+                </ul>
+              </div>
+           </div>
+      <a href="{% url 'sales_list' %}" class="btn btn-secondary">Назад к списку продаж</a>
+    </section>
+{% endblock content %}

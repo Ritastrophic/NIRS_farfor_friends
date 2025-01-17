@@ -1,0 +1,40 @@
+body {
+    background-size: cover; /* Растянуть изображение на всю страницу */
+    background-position: center; /* Центрировать изображение */
+    background-repeat: no-repeat; /* Не повторять изображение */
+    height: 100vh; /* Высота вьюпорта для полной охвата */
+    margin: 0; /* Удаление отступов */
+}
+body {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+.container {
+    display: flex;
+}
+
+.sidebar {
+    background-color: #E0C0E0;
+    width: 200px;
+    padding: 20px;
+}
+
+.content {
+    background-color: #FFFFE0;
+    flex: 1;
+    padding: 20px;
+}
+
+.header {
+    background-color: #FFFFE0;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.header a {
+    text-decoration: none;
+    color: black;
+    margin-right: 20px;
+}

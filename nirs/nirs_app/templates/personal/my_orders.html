@@ -1,0 +1,102 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+
+{% block title %}Мои заказы{% endblock title %}
+
+{% block content %}
+    <section id="products">
+        <h2>Предстоящие</h2>
+        <hr>
+        {% if upcoming_orders %}
+            {% for order in upcoming_orders %}
+                <div class="order-container">
+                    <h3>Заказ №{{ order.id }}</h3>
+                     <p><strong>Дата создания:</strong> {{ order.purchase_date|date:"Y-m-d H:i" }}</p>
+
+                    <div class="appointment-details">
+                       <h4>Подробности заказа:</h4>
+                        <p><strong>Мастерская:</strong> {{ order.appointment.workshop.name }}</p>
+                        <p><strong>Мастер:</strong>
+                            {% if order.appointment.master %}
+                                {{ order.appointment.master.user.first_name }} {{ order.appointment.master.user.last_name }}
+                            {% else %}
+                                Не указан
+                            {% endif %}
+                        </p>
+                         <p><strong>Время начала:</strong> {{ order.appointment.start_time|date:"Y-m-d H:i" }}</p>
+                        <p><strong>Время окончания:</strong> {{ order.appointment.end_time|date:"Y-m-d H:i" }}</p>
+                         <p><strong>Основная услуга:</strong> {{ order.appointment.main_service.name }} ({{ order.appointment.main_service.price }} руб.)</p>
+                    </div>
+                    
+                    <div class="additional-services">
+                        <p><strong>Дополнительные услуги:</strong></p>
+                        {% if order.orderadditionalservice_set.all %}
+                             <ul>
+                                {% for additional_service in order.orderadditionalservice_set.all %}
+                                    <li>{{ additional_service.service.name }} ({{ additional_service.service.price }} руб.)</li>
+                                {% endfor %}
+                             </ul>
+                        {% else %}
+                            <p>Нет дополнительных услуг</p>
+                        {% endif %}
+                    </div>
+
+                     <p><strong>Общая стоимость: </strong> {{ order.get_total_amount }} руб.</p>
+                     <p><strong>Оплачено:</strong> {% if order.is_paid %}Да{% else %}Нет{% endif %}</p>
+
+
+                </div>
+                <hr>
+            {% endfor %}
+        {% else %}
+            <p>Нет предстоящих заказов.</p>
+        {% endif %}
+           <h2>Архив заказов</h2>
+            <hr>
+            {% if archived_orders %}
+                {% for order in archived_orders %}
+                  <div class="order-container">
+                      <h3>Заказ №{{ order.id }}</h3>
+                      <p><strong>Дата создания:</strong> {{ order.purchase_date|date:"Y-m-d H:i" }}</p>
+
+                      <div class="appointment-details">
+                         <h4>Подробности заказа:</h4>
+                          <p><strong>Мастерская:</strong> {{ order.appointment.workshop.name }}</p>
+                          <p><strong>Мастер:</strong>
+                              {% if order.appointment.master %}
+                                  {{ order.appointment.master.user.first_name }} {{ order.appointment.master.user.last_name }}
+                              {% else %}
+                                  Не указан
+                              {% endif %}
+                          </p>
+                           <p><strong>Время начала:</strong> {{ order.appointment.start_time|date:"Y-m-d H:i" }}</p>
+                          <p><strong>Время окончания:</strong> {{ order.appointment.end_time|date:"Y-m-d H:i" }}</p>
+                           <p><strong>Основная услуга:</strong> {{ order.appointment.main_service.name }} ({{ order.appointment.main_service.price }} руб.)</p>
+                      </div>
+                      
+                      <div class="additional-services">
+                          <p><strong>Дополнительные услуги:</strong></p>
+                          {% if order.orderadditionalservice_set.all %}
+                               <ul>
+                                  {% for additional_service in order.orderadditionalservice_set.all %}
+                                      <li>{{ additional_service.service.name }} ({{ additional_service.service.price }} руб.)</li>
+                                  {% endfor %}
+                               </ul>
+                          {% else %}
+                              <p>Нет дополнительных услуг</p>
+                          {% endif %}
+                      </div>
+
+                       <p><strong>Общая стоимость: </strong> {{ order.get_total_amount }} руб.</p>
+                       <p><strong>Оплачено:</strong> {% if order.is_paid %}Да{% else %}Нет{% endif %}</p>
+
+
+                  </div>
+                  <hr>
+                {% endfor %}
+              {% else %}
+                <p>Нет завершенных заказов.</p>
+            {% endif %}
+        </section>
+    </section>
+    {% endblock content %}

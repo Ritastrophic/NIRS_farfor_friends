@@ -1,0 +1,20 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Удаление услуги{% endblock title %}
+{% block content %}
+    <section id="products">
+        <form method="post">
+            {% csrf_token %}
+            <p>Подтвердите удаление услуги</p>
+            <input type = "submit" value="Да">
+            <input type="button" value="Нет" onclick="redirectToServices()">
+                <script>
+                    function redirectToServices() {
+                        window.location.href = "{% url 'services_list' %}";
+                    }
+                </script>
+        </form>
+        <hr/>
+        <p><a href="{% url 'services_list' %}">Назад к списку услуг</a></p>
+    </section>
+{% endblock content %}

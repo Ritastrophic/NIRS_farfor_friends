@@ -1,0 +1,91 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Товары{% endblock title %}
+{% block content %}
+    <section id="products">
+        <button id="toggleFilters">Показать фильтры</button>
+        <div id="filterForm" style="display: none;">
+            <form method="get" action="{% url 'products_list' %}">
+                <input type="text" name="name_q" placeholder="Поиск по названию..." value="{{ name_q }}">
+                <br>
+                <label>Цена от:</label>
+                <input type="number" name="price_from"  value="{{ price_from }}">
+                <label>до:</label>
+                <input type="number" name="price_to"  value="{{ price_to }}">
+                <br>
+                <label>Остаток от:</label>
+                <input type="number" name="quantity_from"  value="{{ quantity_from }}">
+                <label>до:</label>
+                <input type="number" name="quantity_to"  value="{{ quantity_to }}">
+                <br>
+                <button type="submit">Поиск</button>
+            </form>
+        </div>
+        <h2>Список товаров</h2>
+        <table class="products-table">
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>ID</th>
+                    <th>Фото</th>
+                    <th>Название</th>
+                    <th>Цена</th>
+                    <th>Остаток на складе</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if dataset %}
+                    {% for data in dataset %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ data.id }}</td>
+                            <td>
+                                <img src=" {{ data.get_photo_url }}" alt="{{ data.name }}" style="max-width: 100px; max-height: 100px;" />
+                            </td>
+                            <td><a href="{% url 'product_detail_admin' data.id %}">{{ data.name }}</a></td>
+                            <td>{{ data.price }}</td>
+                            <td>{{ data.current_quantity }}</td>
+                            <td>
+                                <a href="{% url 'product_update' data.id %}">Изменить</a> |
+                                <a href="{% url 'product_delete' data.id %}">Удалить</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6">Список товаров пуст.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        <p><a href="{% url 'product_create' %}">Добавить товар</a></p><br>
+    </section>
+     <style>
+           .products-table {
+             width: 100%;
+             border-collapse: collapse;
+            border: 1px solid black;
+           }
+           .products-table th, .products-table td {
+               border: 1px solid rgb(78, 0, 173);
+                padding: 8px;
+            }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleFiltersBtn = document.getElementById('toggleFilters');
+            const filterForm = document.getElementById('filterForm');
+
+            toggleFiltersBtn.addEventListener('click', function() {
+                if (filterForm.style.display === 'none') {
+                    filterForm.style.display = 'block';
+                    toggleFiltersBtn.textContent = 'Скрыть фильтры';
+                } else {
+                    filterForm.style.display = 'none';
+                    toggleFiltersBtn.textContent = 'Показать фильтры';
+                }
+            });
+        });
+    </script>
+{% endblock content %}

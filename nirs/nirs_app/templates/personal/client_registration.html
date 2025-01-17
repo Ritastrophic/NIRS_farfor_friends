@@ -1,0 +1,15 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Регистрация{% endblock title %}
+{% block content %}
+<section id = 'auth'>
+    <h2>Регистрация</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+    <h2>Есть аккаунт?</h2>
+    <a href="{% url 'auth' %}">Войти</a>
+</section>
+{% endblock content %}

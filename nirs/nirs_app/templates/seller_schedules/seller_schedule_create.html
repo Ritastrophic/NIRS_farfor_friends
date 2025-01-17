@@ -1,0 +1,21 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Добавить расписание{% endblock title %}
+{% block content %}
+    <section id="products">
+        <h2>Добавить расписание</h2>
+        <form method="post">
+            {% csrf_token %}
+            
+            <label for="seller">Продавец:</label>
+             <select name="seller_id" id="seller">
+                {% for seller in sellers %}
+                  <option value="{{ seller.id }}">{{ seller.user.first_name }} {{ seller.user.last_name }}</option>
+                {% endfor %}
+            </select><br><br>
+            {{ form.as_p }}
+             <input type="submit" value="Добавить">
+        </form>
+         <p><a href="{% url 'seller_schedules' %}">Назад к списку расписаний</a></p>
+    </section>
+{% endblock content %}

@@ -1,0 +1,23 @@
+{% extends "index.html" %}
+{% block content %}
+    <div class="carousel-container products-page">
+        <h2>Наши мастера</h2>
+        <div class="carousel-wrapper carousel-wrapper-product">
+            <div class="carousel carousel-product" style="transform: translateX(0px)">
+                {% for master in masters %}
+                <div class="carousel-item">
+                        <a href="{% url 'master_detail' master.id %}" class="carousel-item-link">
+                            <div class="product-image-wrapper">
+                                <img src="{{ master.get_photo_url }}" alt="{{ master.user.first_name }}" class="product-image">
+                            </div>
+                            <div class="product-info">
+                                <h4>{{ master.user.first_name }} {{ master.user.last_name }}</h4>
+                                <h4>Стаж с: {{ master.experience_since }}</h4>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

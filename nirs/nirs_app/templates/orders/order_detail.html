@@ -1,0 +1,46 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+
+{% block title %}Детали заказа{% endblock title %}
+
+{% block content %}
+    <section id="products">
+        <h1>Детали заказа #{{ order.id }}</h1>
+
+        <h2>Информация о записи:</h2>
+          <p><strong>Клиент:</strong> {{ order.appointment.client.first_name }} {{ order.appointment.client.last_name }}</p>
+            <p><strong>Мастерская:</strong> {{ order.appointment.workshop.name }}</p>
+            {% if order.appointment.master %}
+              <p><strong>Мастер:</strong> {{ order.appointment.master.user.first_name }} {{ order.appointment.master.user.last_name }}</p>
+            {% endif %}
+            <p><strong>Основная услуга:</strong> {{ order.appointment.main_service.name }} (Цена: {{ order.appointment.main_service.price }})</p>
+        <p><strong>Дата и время записи:</strong> {{ order.appointment.start_time|date:"Y-m-d H:i" }}</p>
+
+
+        <h2>Информация о заказе:</h2>
+        <p><strong>Оплачен:</strong> {% if order.is_paid %}Да{% else %}Нет{% endif %}</p>
+        <p><strong>Дата создания заказа:</strong> {{ order.purchase_date|date:"Y-m-d H:i" }}</p>
+         <h2>Дополнительные услуги:</h2>
+        <ul>
+            {% for service in additional_services %}
+                <li>{{ service.service.name }} - {{ service.service.price }}</li>
+            {% empty %}
+                <li>Нет дополнительных услуг</li>
+            {% endfor %}
+        </ul>
+        <p><strong>Общая стоимость заказа: {{ order.get_total_amount }}</strong></p>
+
+
+        <h2>Добавить/удалить дополнительные услуги</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form_additional_service.management_form }}
+            {% for form in form_additional_service %}
+                {{ form.as_p }}
+            {% endfor %}
+            <button type="submit">Сохранить дополнительные услуги</button>
+        </form>
+            <hr>
+             <a href="{% url 'orders_list' %}">Назад к списку заказов</a>
+    </section>
+{% endblock content %}

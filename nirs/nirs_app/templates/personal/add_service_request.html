@@ -1,0 +1,43 @@
+{% extends "personal/user_personal.html" %}
+{% block content %}
+    <h2>Добавить заявку на услугу</h2>
+    <form method="post" action="{% url 'add_to_request' %}">
+        {% csrf_token %}
+
+        <div>
+            <label for="date">Дата:</label>
+            <input type="date" name="date" required>
+        </div>
+        <div>
+            <label for="time">Время:</label>
+            <input type="time" name="time" required>
+        </div>
+       <div>
+           <label>Услуги:</label>
+            {% for service in services %}
+              <label>
+                <input type="checkbox" name="service_ids" value="{{ service.id }}">
+                {{ service.name }}
+               </label>
+             {% endfor %}
+        </div>
+        <div>
+           <label for="master">Мастер:</label>
+           <select name="master_id" required>
+                {% for master in masters %}
+                  <option value="{{ master.id }}">{{master}}</option>
+                 {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="workshop">Мастерская:</label>
+            <select name="workshop_id" required>
+                {% for workshop in workshops %}
+                    <option value="{{ workshop.id }}">{{ workshop.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit">Добавить заявку</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Обновление продажи{% endblock title %}
+{% block content %}
+<section id="products">
+    <h2>Обновление продажи</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {{ formset.management_form }}
+        {% for form in formset %}
+        <div style="border: 1px solid black; padding: 10px; margin: 10px;">
+           {{ form.as_p }}
+        </div>
+        {% endfor %}
+
+       <button type="submit">Изменить</button>
+       <hr/>
+       <p><a href="{% url 'sales_list' %}">Назад к журналу продаж</a></p>
+</section>
+{% endblock content %}

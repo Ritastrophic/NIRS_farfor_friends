@@ -1,0 +1,14 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Изменить расписание{% endblock title %}
+{% block content %}
+    <section id="products">
+        <h2>Изменить расписание</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Сохранить">
+        </form>
+        <p><a href="{% url 'seller_schedules' %}">Назад к списку расписаний</a></p>
+    </section>
+{% endblock content %}

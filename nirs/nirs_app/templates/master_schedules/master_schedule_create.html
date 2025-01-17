@@ -1,0 +1,21 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Добавить расписание{% endblock title %}
+{% block content %}
+    <section id="products">
+        <h2>Добавить расписание</h2>
+        <form method="post">
+            {% csrf_token %}
+            
+            <label for="master">Мастер:</label>
+             <select name="master_id" id="master">
+                {% for master in masters %}
+                  <option value="{{ master.id }}">{{ master.user.first_name }} {{ master.user.last_name }}</option>
+                {% endfor %}
+            </select><br><br>
+            {{ form.as_p }}
+             <input type="submit" value="Добавить">
+        </form>
+         <p><a href="{% url 'master_schedules' %}">Назад к списку расписаний</a></p>
+    </section>
+{% endblock content %}

@@ -1,0 +1,16 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+
+{% block title %}Удаление заказа{% endblock title %}
+
+{% block content %}
+    <section id="products">
+        <h2>Удалить заказ #{{ order.id }}?</h2>
+        <p>Вы уверены, что хотите удалить этот заказ? Это действие нельзя будет отменить.</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit">Удалить</button>
+             <a href="{% url 'order_detail_admin' order.id %}">Отмена</a>
+        </form>
+    </section>
+{% endblock content %}

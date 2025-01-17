@@ -1,0 +1,33 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Статистика по продажам{% endblock title %}
+{% block content %}
+    <section id="products">
+        <h2>Статистика по продажам</h2>
+        <form method="get">
+            {{ form.as_p }}
+            <button type="submit">Фильтровать</button>
+          </form>
+        <div>
+            <h3>Общая выручка:</h3>
+            <p>{{ total_revenue }}</p>
+        </div>
+        <div>
+            <h3>Самый продаваемый товар:</h3>
+            {% if most_sold_product %}
+            <p>{{ most_sold_product }} (продано: {{ most_sold_product_quantity }})</p>
+            {% else %}
+            <p>Нет данных о продажах.</p>
+            {% endif %}
+        </div>
+       <div>
+            <h3>День с наибольшей выручкой:</h3>
+            {% if peak_revenue_day %}
+            <p>{{ peak_revenue_day }} (Выручка: {{ peak_revenue_amount }})</p>
+            {% else %}
+            <p>Нет данных о продажах.</p>
+            {% endif %}
+        </div>
+        <p><a href="{% url 'sales_list' %}">К журналу продаж</a></p>
+    </section>
+{% endblock content %}

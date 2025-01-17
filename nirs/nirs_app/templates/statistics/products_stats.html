@@ -1,0 +1,74 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Статистика по товарам{% endblock title %}
+{% block content %}
+    <section id="products">
+        <h2>Топ 3 Самых Дорогих Товара</h2>
+        <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">№</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">ID</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Фото</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Название</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Цена</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Остаток на складе</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if top_expensive_products %}
+                    {% for data in top_expensive_products %}
+                        <tr>
+                            <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ forloop.counter }}</td>
+                            <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ data.id }}</td>
+                            <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">
+                                <img src="{{ data.get_photo_url }}" alt="{{ data.name }}" style="max-width: 100px; max-height: 100px;" />
+                            </td>
+                            <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ data.name }}</td>
+                            <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ data.price }}</td>
+                            <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ data.current_quantity }}</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6">Список товаров пуст</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        <h2>Топ 3 Самых дешевых Товара</h2>
+        <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">№</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">ID</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Фото</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Название</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Цена</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Остаток на складе</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if top_cheap_products %}
+                    {% for data in top_cheap_products %}
+                        <tr>
+                            <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ forloop.counter }}</td>
+                            <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ data.id }}</td>
+                            <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">
+                                <img src="{{ data.get_photo_url }}" alt="{{ data.name }}" style="max-width: 100px; max-height: 100px;" />
+                            </td>
+                            <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ data.name }}</td>
+                            <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ data.price }}</td>
+                            <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ data.current_quantity }}</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6">Список товаров пуст</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        <p><a href="{% url 'products_list' %}">К списку товаров</a></p>
+    </section>
+{% endblock content %}

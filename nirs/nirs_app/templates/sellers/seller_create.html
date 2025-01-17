@@ -1,0 +1,14 @@
+{% extends "personal/user_personal.html" %}
+{% block title %}Добавление нового продавца{% endblock title %}
+{% block content %}
+<section id="products">
+    <h2>Добавление нового продавца</h2> 
+    <form method="post"> 
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Добавить продавца</button>
+    </form>
+    <hr/>
+<p><a href="{% url 'sellers_list' %}">Назад к списку продавцов</a></p>
+</section>
+{% endblock content %}

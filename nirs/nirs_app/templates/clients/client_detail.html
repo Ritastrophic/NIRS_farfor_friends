@@ -1,0 +1,16 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %} Информация о клиенте {{ client.user.first_name }} {{ client.user.last_name }}{% endblock title %}
+{% block content %}
+    <section id="products">
+        <h3>ID: {{ client.id }}</h3><br>
+        <h3>Имя: {{ client.user.first_name }}</h3><br>
+        <h3>Фамилия: {{ client.user.last_name }}</h3><br>
+        <h3>E-mail: {{ client.user.email }}</h3><br>
+        <h3>Телефон: {{ client.user.phone_number }}</h3><br>
+        <h3>Дата рождения: {{ client.birth_date }}</h3><br>
+        <h3>Дата регистрации: {{ client.user.date_joined }}</h3><br>
+        <hr/>
+    <a href="{% url 'clients_list' %}">Вернуться к списку клиентов</a>
+    </section>
+{% endblock content %}

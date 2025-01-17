@@ -1,0 +1,290 @@
+body {
+    background-size: cover; /* Растянуть изображение на всю страницу */
+    background-repeat: repeat-y;
+    background-position: center; /* Центрировать изображение */
+    height: 100vh; /* Высота вьюпорта для полной охвата */
+    margin: 0; /* Удаление отступов */
+    font-family: sans-serif;
+    box-sizing: border-box;
+}
+
+.header {
+    background-color: #FFFFE0;
+    padding: 1%;
+    display: flex;
+    width: 100%;
+    height: 10%;
+    position: fixed;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.header a {
+    text-decoration:dotted;
+    color: black;
+    margin-right: 20px;
+}
+
+.footer {
+    background-color: #FFFFE0;
+    width: 100%;
+    height: 5%;
+    text-align: center;
+    position:static;
+}
+
+.container {
+    display: flex;
+    width: 95%;
+}
+
+.sidebar {
+    background-color: #E0C0E0;
+    width: 15%;
+    padding: 1%;
+    margin-top: 6.5%;
+    margin-left: 20px;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: black;
+    text-align: center;
+}
+
+.content {
+    align-self: center;
+    margin-top: 3%;
+    flex: 1;
+    padding: 3%;
+    height: auto;
+    text-align: center;
+}
+
+#auth {
+    background-color: #a487d3;
+    flex: 1;
+    padding: 5%;
+    width: 100%;
+    height: auto;
+    text-align: left;
+
+}
+
+#about {
+    padding: 3%;
+    background-color: #a487d3;
+}
+
+.about {
+    background-color: #a487d3;
+    display: inline-block;
+    width: 100%;
+}
+
+#about-text {
+    padding: 3%;
+    display: inline-block;
+    max-width: 80%;
+    width: auto;
+}
+
+#products {
+    padding: 5%;
+    width: 100%;
+    height: auto;
+    background-color: #a487d3;
+}
+
+.carousel-container {
+    background-color: #a487d3;
+    width: auto;
+    margin: auto;
+    position: relative;
+}
+
+.carousel-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.carousel-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.carousel {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    padding: 0;
+    padding-left: 8%;
+}
+
+.carousel-item-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.carousel-item {
+    flex: 0 0 300px; /* Фиксированная ширина */
+    margin: 10px; /* Отступы между карточками */
+    height: 400px;
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: #a93535;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    transition: transform 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.product-image-wrapper {   /*  Обертка остается, но без размеров */
+    overflow: hidden;
+}
+
+.product-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    background-color: #255c8f;
+    padding: 10px;
+    border-radius: 10px;
+    display: block;
+}
+
+
+.product-info {
+   text-align: center;
+   height: 30%;
+    width: 100%;
+    background-color: #a487d3;
+}
+
+.product-info h3 {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+.price {
+    font-size: 1em;
+    color: #333;
+    font-weight: bold;
+    margin: 0;
+}
+
+.carousel-prev,
+.carousel-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2em;
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    padding: 10px;
+    color: #333;
+    user-select: none;
+    z-index: 10;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.carousel-prev {
+    left: 0;
+}
+
+.carousel-next {
+    right: 0;
+}
+
+
+
+/* Специфические стили для страницы products */
+.products-page .carousel-wrapper {
+    justify-content: center; /* Выравниваем карточки по центру */
+}
+
+.products-page .carousel {
+    padding-left: 0; /* Убираем левый отступ */
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.products-page .carousel-item {
+   flex: 0 0 calc(33.333% - 20px);
+   margin: 10px;
+    /* Чтобы помещались по три в ряд */
+}
+.carousel-item .add-to-cart {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.carousel-item .add-to-cart:hover {
+    background-color: #367c39;
+}
+
+
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 60%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+ .modal-btn{
+    padding: 10px 20px;
+    background: #007BFF;
+     margin-top: 10px;
+    color: white;
+    text-decoration: none;
+     border-radius: 5px;
+     margin-left: 10px;
+     margin-right: 10px;
+
+}

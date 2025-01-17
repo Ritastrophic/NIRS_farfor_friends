@@ -1,0 +1,20 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Удаление мастерской{% endblock title %}
+{% block content %}
+    <section id="products">
+        <form method="post">
+            {% csrf_token %}
+            <p>Подтвердите удаление мастерской</p>
+            <input type = "submit" value="Да">
+            <input type="button" value="Нет" onclick="redirectToWorkshops()">
+                <script>
+                    function redirectToWorkshops() {
+                        window.location.href = "{% url 'workshops_list' %}";
+                    }
+                </script>
+        </form>
+        <hr/>
+        <p><a href="{% url 'workshops_list' %}">Назад к списку мастерских</a></p>
+    </section>
+{% endblock content %}

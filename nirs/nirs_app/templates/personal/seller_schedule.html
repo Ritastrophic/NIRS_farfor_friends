@@ -1,0 +1,37 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Мое расписание{% endblock title %}
+{% block content %}
+    <section id="products">
+        <h2>Мое расписание</h2>
+        <form method="get">
+           {% if show_past %}
+              <button type="submit" name="show_past" value="">Скрыть прошедшие смены</button>
+           {% else %}
+            <button type="submit" name="show_past" value="True">Показать прошедшие смены</button>
+            {% endif %}
+        </form>
+        {% if seller_schedules %}
+            <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+                <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>Начало смены</th>
+                        <th>Конец смены</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for seller_schedule in seller_schedules %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ seller_schedule.schedule.start_time }}</td>
+                            <td>{{ seller_schedule.schedule.end_time }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>У вас нет расписания.</p>
+        {% endif %}
+    </section>
+{% endblock content %}

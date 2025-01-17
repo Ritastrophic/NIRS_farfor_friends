@@ -1,0 +1,38 @@
+{% extends "index.html" %}
+{% load static %}
+{% block content %}
+    <div class="carousel-container products-page" data-is-authenticated="{{ user.is_authenticated|lower }}">
+        <h2>Наши товары</h2>
+        <div class="carousel-wrapper carousel-wrapper-product">
+            <div class="carousel carousel-product" style="transform: translateX(0px)">
+                {% for product in products %}
+                <div class="carousel-item">
+                        <a href="{% url 'product_detail' product.id %}" class="carousel-item-link">
+                            <div class="product-image-wrapper">
+                                <img src="{{ product.get_photo_url}}" alt="{{ product.name }}" class="product-image" />
+                            </div>
+                                <div class="product-info">
+                                    <h4>{{ product.name }}</h4>
+                                    <h4 class="price">Цена: {{ product.price }} ₽</h4>
+                                </div>
+                        </a>
+                        <br>
+                        <form method="post" action="{% url 'add_to_cart' %}" class="add-to-cart-form">
+                            {% csrf_token %}
+                             <input type="hidden" name="product_id" value="{{ product.id }}">
+                            <button type="submit" class="add-to-cart-btn">Добавить в корзину</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+<div id="auth-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Для добавления товара в корзину, пожалуйста, зарегистрируйтесь или войдите в систему.</p>
+        <a href="{% url 'client_registration' %}" class = "modal-btn">Регистрация</a>
+        <a href="{% url 'auth' %}" class = "modal-btn">Вход</a>
+    </div>
+</div>
+{% endblock content %}

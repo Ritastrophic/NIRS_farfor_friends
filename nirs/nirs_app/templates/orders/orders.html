@@ -1,0 +1,129 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+
+{% block title %}Заказы{% endblock title %}
+
+{% block content %}
+    <section id="products">
+        <h2>Заказы</h2>
+        <hr>
+        <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+            <thead>
+                <tr>
+                     <th >№</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">ID заказа</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Клиент</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Мастерская</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Мастер</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Дата и время записи</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Основная услуга</th>
+                     <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Дополнительные услуги</th>
+                     <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Цена основной услуги</th>
+                     <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Оплачен</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if orders %}
+                <button id="toggleOrderFilters">Поиск по параметрам заказа</button>
+                <br>
+                <div id="filterOrderForm" style="display: none;">
+                    <form method="get" action="{% url 'orders_list' %}">
+                        <label for="date_from">Дата с:</label>
+                        <input type="date" name="date_from" id="date_from" value="{{ date_from }}">
+                        <br><br>
+                        <label for="date_to">Дата по:</label>
+                        <input type="date" name="date_to" id="date_to" value="{{ date_to }}">
+                         <br><br>
+                        <label for="client">Клиент:</label>
+                            <select name="client" id="client">
+                                <option value="">Все клиенты</option>
+                                {% for client in clients %}
+                                <option value="{{ client.id }}" {% if request.GET.client|stringformat:"s" == client.id|stringformat:"s" %}selected{% endif %}>{{ client.user.first_name }} {{ client.user.last_name }}</option>
+                                {% endfor %}
+                            </select>
+                         <br><br>
+                         <label for="workshop">Мастерская:</label>
+                            <select name="workshop" id="workshop">
+                                <option value="">Все мастерские</option>
+                                {% for workshop in workshops %}
+                                <option value="{{ workshop.id }}" {% if request.GET.workshop|stringformat:"s" == workshop.id|stringformat:"s" %}selected{% endif %}>{{ workshop.name }}</option>
+                                {% endfor %}
+                            </select>
+                             <br><br>
+                         <label for="master">Мастер:</label>
+                            <select name="master" id="master">
+                                <option value="">Все мастера</option>
+                                {% for master in masters %}
+                                <option value="{{ master.id }}" {% if request.GET.master|stringformat:"s" == master.id|stringformat:"s" %}selected{% endif %}>{{ master.user.first_name }} {{ master.user.last_name }}</option>
+                                {% endfor %}
+                            </select>
+                            <br><br>
+                        <button type="submit">Поиск</button>
+                    </form>
+                 </div>
+                <hr>
+                <table>
+                        <tr>
+                            <th>№</th>
+                            <th>ID</th>
+                            <th>Клиент</th>
+                            <th>Мастерская</th>
+                            <th>Мастер</th>
+                            <th>Время начала</th>
+                             <th>Основная услуга</th>
+                            <th>Доп. услуги</th>
+                            <th>Цена</th>
+                            <th>Оплата</th>
+                            <th>Действия</th>
+                        </tr>
+                        {% for order in orders %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ order.id }}</td>
+                                <td>{{ order.appointment.client.first_name }} {{ order.appointment.client.last_name }}</td>
+                                <td>{{ order.appointment.workshop.name }}</td>
+                                <td>{% if order.appointment.master %}{{ order.appointment.master.user.first_name }} {{ order.appointment.master.user.last_name }}{% endif %}</td>
+                                <td>{{ order.appointment.start_time | date:"Y-m-d H:i" }}</td>
+                                <td>{{ order.appointment.main_service.name }}</td>
+                                <td>
+                                    {% for additional_service in order.orderadditionalservice_set.all %}
+                                        {{ additional_service.service.name }},
+                                    {% endfor %}
+                                </td>
+                                <td>{{ order.appointment.main_service.price }}</td>
+                                <td>{{ order.is_paid }}</td>
+                                <td>
+                                        <a href="{% url 'order_update' order.id %}">Изменить</a> |
+                                        <a href="{% url 'order_delete' order.id %}">Удалить</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                </table>
+                {% else %}
+                    <tr>
+                        <td colspan="11">Список пуст</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+         <hr>
+        <p><a href="{% url 'order_create' %}">Создать заказ</a></p>
+        <br>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleOrderFiltersButton = document.getElementById('toggleOrderFilters');
+            const filterOrderFormDiv = document.getElementById('filterOrderForm');
+    
+            toggleOrderFiltersButton.addEventListener('click', function() {
+                if (filterOrderFormDiv.style.display === 'none') {
+                    filterOrderFormDiv.style.display = 'block';
+                } else {
+                    filterOrderFormDiv.style.display = 'none';
+                }
+            });
+        });
+    </script>
+{% endblock content %}

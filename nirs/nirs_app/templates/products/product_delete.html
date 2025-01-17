@@ -1,0 +1,20 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Удаление товара{% endblock title %}
+{% block content %}
+    <section id="products">
+        <form method="post">
+            {% csrf_token %}
+            <p>Подтвердите удаление товара</p>
+            <input type = "submit" value="Да">
+            <input type="button" value="Нет" onclick="redirectToProducts()">
+                <script>
+                    function redirectToProducts() {
+                        window.location.href = "{% url 'products_list' %}";
+                    }
+                </script>
+        </form>
+<hr/>
+<p><a href="{% url 'products_list' %}">Назад к списку товаров</a></p>
+    </section>
+{% endblock content %}

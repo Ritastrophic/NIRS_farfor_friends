@@ -1,0 +1,24 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+
+{% block title %}Удаление продажи № {{ id }}{% endblock title %}
+
+{% block content %}
+    <section id="products">
+        <h2>Удаление продажи № {{ id }}</h2>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+         <p>Вы уверены, что хотите удалить продажу № {{ id }}?</p>
+         <form method="post">
+            {% csrf_token %}
+             <button type="submit" class="btn btn-danger">Удалить</button>
+             <a href="{% url 'sales_list' %}" class="btn btn-secondary">Отмена</a>
+        </form>
+
+    </section>
+{% endblock content %}

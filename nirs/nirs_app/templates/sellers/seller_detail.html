@@ -1,0 +1,12 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %} {{ seller.name }}{% endblock title %}
+{% block content %}
+    <section id="products">
+        <h3>ID: {{ seller.user_id }}</h3><br>
+        <h3>Имя: {{ seller.user.first_name }}</h3><br>
+        <a href="{% url 'seller_delete' seller.id %}">Удалить продавца</a>
+        <hr/>
+<p><a href="{% url 'sellers_list' %}">Назад к списку продавцов</a></p>
+    </section>
+{% endblock content %}

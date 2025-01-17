@@ -1,0 +1,110 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Мои покупки{% endblock title %}
+{% block content %}
+<section id="products">
+    <h2>Мои покупки</h2>
+    <hr>
+    <h3>В сборке</h3>
+    {% if purchases_in_progress %}
+    <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+        <thead>
+            <tr>
+              <th>№</th>
+              <th>ID продажи</th>
+              <th>Продавец</th>
+              <th>Дата покупки</th>
+              <th>Товары</th>
+              <th>Общая сумма</th>
+            </tr>
+        </thead>
+          <tbody>
+            {% for purchase in purchases_in_progress %}
+            <tr>
+                <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ forloop.counter }}</td>
+                <td>{{ purchase.id }}</td>
+                <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ purchase.seller_name }}</td>
+                <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ purchase.purchase_date }}</td>
+                <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">
+                  {% for product in purchase.sold_products %}
+                      <p>{{ product.name }} ({{ product.quantity }} шт.) - {{ product.product_total }} ₽</p>
+                  {% endfor %}
+                </td>
+                <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ purchase.total_sale_price }} ₽</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+    </table>
+    {% else %}
+      <p>Нет покупок в сборке.</p>
+    {% endif %}
+    <hr>
+     <h3>Ожидают выдачи</h3>
+    {% if purchases_waiting %}
+    <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+        <thead>
+            <tr>
+              <th>№</th>
+              <th>ID продажи</th>
+              <th>Продавец</th>
+              <th>Дата покупки</th>
+              <th>Товары</th>
+              <th>Общая сумма</th>
+            </tr>
+        </thead>
+          <tbody>
+            {% for purchase in purchases_waiting %}
+            <tr>
+                <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ forloop.counter }}</td>
+                <td>{{ purchase.id }}</td>
+                <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ purchase.seller_name }}</td>
+                <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ purchase.purchase_date }}</td>
+                <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">
+                  {% for product in purchase.sold_products %}
+                      <p>{{ product.name }} ({{ product.quantity }} шт.) - {{ product.product_total }} ₽</p>
+                  {% endfor %}
+                </td>
+                <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ purchase.total_sale_price }} ₽</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+    </table>
+    {% else %}
+      <p>Нет покупок, ожидающих выдачи.</p>
+    {% endif %}
+    <hr>
+    <h3>Выданные покупки</h3>
+    {% if purchases_given %}
+    <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+      <thead>
+          <tr>
+            <th>№</th>
+            <th>ID продажи</th>
+            <th>Продавец</th>
+            <th>Дата покупки</th>
+            <th>Товары</th>
+            <th>Общая сумма</th>
+          </tr>
+      </thead>
+        <tbody>
+          {% for purchase in purchases_given %}
+            <tr>
+              <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ forloop.counter }}</td>
+              <td>{{ purchase.id }}</td>
+              <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ purchase.seller_name }}</td>
+              <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ purchase.purchase_date }}</td>
+              <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">
+                {% for product in purchase.sold_products %}
+                    <p>{{ product.name }} ({{ product.quantity }} шт.) - {{ product.product_total }} ₽</p>
+                {% endfor %}
+              </td>
+              <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ purchase.total_sale_price }} ₽</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Нет выданных покупок.</p>
+    {% endif %}
+</section>
+{% endblock content %}

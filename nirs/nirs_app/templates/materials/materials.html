@@ -1,0 +1,36 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Сырье{% endblock title %}
+{% block content %}
+    <section id="products">
+        <h2>Список сырья</h2>
+        <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">№</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">ID</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Название</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Цена</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Остаток на складе</th>
+                    <th style="border: 1px solid rgb(78, 0, 173); padding: 8px;">Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in dataset %}
+                <tr>
+                    <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ forloop.counter }}</td>
+                    <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ data.id }}</td>
+                    <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;"><a href="{% url 'material_detail_admin' data.id %}">{{ data.name }}</a></td>
+                    <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ data.price }}</td>
+                    <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">{{ data.current_quantity }}</td>
+                    <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">
+                        <a href="{% url 'material_update' data.id %}">Изменить</a> | 
+                        <a href="{% url 'material_delete' data.id %}">Удалить</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p><a href="{% url 'material_create' %}">Добавить сырье</a></p><br>
+    </section>
+{% endblock content %}

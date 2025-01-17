@@ -1,0 +1,45 @@
+{% extends "personal/user_personal.html" %}
+{% block content %}
+<section id="products">
+    <h2>Корзина</h2>
+   {% if cart_items %}
+          {% for item in cart_items %}
+            <div class="carousel-item">
+                    <div class="cart-item-image">
+                        <img src="{{ item.product.get_photo_url }}" alt="{{ item.product.name }}" style="width: 300px; height: 300px;">
+                    </div>
+                    <div class="cart-item-content">
+                        <h3>{{ item.product.name }}</h3>
+                        <p class="price">Цена за единицу: {{ item.product.price }} ₽</p>
+                        <div class="quantity-controls">
+                            <form method="post" action="{% url 'update_cart_item' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="item_id" value="{{ item.id }}">
+                                <input type="number" class="quantity-input" name="quantity" value="{{ item.quantity }}" min="0" step="1" style="width: 60px;">
+                                <button type="submit" class="btn btn-sm btn-primary">Обновить</button>
+                            </form>
+                        </div>
+                        <p>Сумма: <span class="item-total-price">{{ item.get_total_price }}</span> ₽</p>
+                    </div>
+            </div>
+           {% endfor %}
+         <div class="total-price">
+            <p>Общая стоимость корзины: <span class="total-price-value">{{ total_price }}</span> ₽</p>
+            <form method="post" action="{% url 'checkout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Оплатить</button>
+             </form>
+         </div>
+         {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <h3{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h3>
+            {% endfor %}
+        </ul>
+    {% endif %}
+   {% else %}
+        <p>Корзина пуста</p>
+        <p><a href="{% url 'products' %}">К товарам</a></p>
+   {% endif %}
+</section>
+{% endblock %}

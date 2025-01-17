@@ -1,0 +1,14 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %} {{ data.name }} {% endblock title %}
+{% block content %}
+    <section id="products">
+        <h3>ID: {{ data.id }}</h3><br>
+        <img src="{{ data.get_photo_url }}" alt="{{ data.name }}" style="max-width: 100px; max-height: 100px;" />
+        <br>
+        <h3>Name: {{ data.name }}</h3><br>
+        <h3>Price: {{ data.price }}</h3><br>
+<hr/>
+<p><a href="{% url 'services' %}">Назад к списку услуг</a></p>
+    </section>
+{% endblock content %}

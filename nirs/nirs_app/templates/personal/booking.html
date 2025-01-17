@@ -1,0 +1,249 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+
+{% block title %}Бронирование услуги{% endblock title %}
+
+{% block content %}
+            <div id="products">
+                <h1>Оформление заказа</h1>
+                <p>Выбранная услуга: <span id="selected-service-name"></span></p>
+                <input type="hidden" id="selected-service-id">
+                <p>Стоимость услуги: <span id="selected-service-price"></span> ₽</p>
+                <p>Длительность услуги: <span id="selected-service-duration"></span> минут</p>
+                <br>
+                 <label for="people-count">Количество человек:</label>
+                <input type="number" id="people-count" min="1" value="1">
+                <br>
+                <br>
+                <label for="workshop-select">Выберите мастерскую:</label>
+                <select id="workshop-select"></select>
+                <br>
+                <br>
+                <label for="booking-date">Выберите дату:</label>
+                <input type="date" id="booking-date">
+                <br>
+                <br>
+                <label for="booking-time">Выберите время:</label>
+                <select id="booking-time"></select>
+                <br>
+                <br>
+                <label for="master-select">Выберите мастера:</label>
+                <select id="master-select"></select>
+                <br>
+                <br>
+                <div id="additional-services-container">
+                    <h2>Дополнительные услуги</h2>
+                    <!-- динамически генерируется -->
+                </div>
+                <br>
+                <br>
+                <button id="checkout-btn">Оплатить</button>
+                <p id="error-message" style="color: red;"></p>
+            </div>
+        
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                  const urlParams = new URLSearchParams(window.location.search);
+                  const serviceId = urlParams.get('service_id');
+                  const workshopSelect = document.getElementById('workshop-select');
+                  const bookingDateInput = document.getElementById('booking-date');
+                  const bookingTimeSelect = document.getElementById('booking-time');
+                  const peopleCountInput = document.getElementById('people-count');
+                  const masterSelect = document.getElementById('master-select');
+                  const selectedServiceName = document.getElementById('selected-service-name');
+                  const selectedServiceIdInput = document.getElementById('selected-service-id');
+                  const selectedServicePrice = document.getElementById('selected-service-price');
+                  const selectedServiceDuration = document.getElementById('selected-service-duration');
+              
+                  selectedServiceIdInput.value = serviceId;
+              
+                  if (!serviceId) {
+                      alert('Услуга не выбрана!');
+                      return;
+                  }
+              
+                  //Загрузка информации об услуге
+                  fetch(`/api/get_service/${serviceId}/`)
+                      .then(response => response.json())
+                      .then(data => {
+                          selectedServiceName.textContent = data.name;
+                          selectedServicePrice.textContent = data.price;
+                          selectedServiceDuration.textContent = data.duration;
+                           updateWorkshops();
+                      })
+                      .catch(error => console.error('Ошибка при загрузке услуги:', error));
+              
+              
+                  peopleCountInput.addEventListener('change', updateWorkshops);
+                  bookingDateInput.addEventListener('change', updateTimeSlots);
+                  workshopSelect.addEventListener('change', updateTimeSlots);
+                 bookingTimeSelect.addEventListener('change', updateMasters);
+                  
+                  async function updateWorkshops() {
+                      const peopleCount = peopleCountInput.value;
+                      const serviceId = selectedServiceIdInput.value;
+              
+                      try {
+                          const response = await fetch(`/get-workshops/?people_count=${peopleCount}&service_id=${serviceId}`);
+                          const data = await response.json();
+              
+                          workshopSelect.innerHTML = '<option value="">Выберите мастерскую</option>';
+                          data.forEach(workshop => {
+                              const option = document.createElement('option');
+                              option.value = workshop.id;
+                              option.textContent = workshop.name;
+                              workshopSelect.appendChild(option);
+                          });
+                       } catch (error) {
+                          console.error('Ошибка при загрузке мастерских:', error);
+                      }
+                  }
+              
+                  async function updateTimeSlots() {
+                      const selectedDate = bookingDateInput.value;
+                      const workshopId = workshopSelect.value;
+                      const serviceId = selectedServiceIdInput.value;
+              
+                      bookingTimeSelect.innerHTML = '';
+              
+                      if (!selectedDate || !workshopId) {
+                          return;
+                      }
+              
+                      try {
+                          const response = await fetch(`/get-available-times/?date=${selectedDate}&workshop_id=${workshopId}&service_id=${serviceId}`);
+                          if (!response.ok) {
+                              console.error(`Ошибка HTTP: ${response.status}`);
+                              return;
+                          }
+                          const data = await response.json();
+              
+                          if (data.length === 0) {
+                              const option = document.createElement('option');
+                              option.textContent = 'Нет доступного времени на эту дату';
+                              option.disabled = true;
+                              bookingTimeSelect.appendChild(option);
+                              return;
+                          }
+              
+                          data.forEach(time => {
+                              const option = document.createElement('option');
+                              option.value = time;
+                              option.textContent = time;
+                              bookingTimeSelect.appendChild(option);
+                          });
+                      } catch (error) {
+                          console.error('Ошибка при загрузке доступного времени:', error);
+                      }
+                  }
+              
+                 async function updateMasters() {
+                      const workshopId = workshopSelect.value;
+                      const selectedDate = bookingDateInput.value;
+                      const selectedTime = bookingTimeSelect.value;
+              
+              
+                      if (!workshopId || !selectedDate || !selectedTime) {
+                          masterSelect.innerHTML = '<option value="">Выберите мастера</option>';
+                         return;
+                      }
+              
+                      try {
+                          const response = await fetch(`/get-masters/?workshop_id=${workshopId}&date=${selectedDate}&time=${selectedTime}`);
+                          const data = await response.json();
+              
+                          masterSelect.innerHTML = '<option value="">Выберите мастера</option>';
+                          data.forEach(master => {
+                              const option = document.createElement('option');
+                              option.value = master.id;
+                              option.textContent = `${master.first_name} ${master.last_name}`;
+                              masterSelect.appendChild(option);
+                          });
+                      } catch (error) {
+                          console.error('Ошибка при загрузке мастеров:', error);
+                      }
+                  }
+              
+                  const checkoutButton = document.getElementById('checkout-btn');
+                  checkoutButton.addEventListener('click', async () => {
+                      const selectedServiceId = document.getElementById('selected-service-id').value;
+                      const workshopId = document.getElementById('workshop-select').value;
+                      const bookingDate = document.getElementById('booking-date').value;
+                      const bookingTime = document.getElementById('booking-time').value;
+                      const masterId = document.getElementById('master-select').value;
+              
+              
+                        const additionalServicesCheckboxes = document.querySelectorAll('#additional-services-container input[type="checkbox"]:checked');
+                       const additionalServices = Array.from(additionalServicesCheckboxes).map(checkbox => checkbox.value);
+              
+              
+                      const data = {
+                          service_id: selectedServiceId,
+                          workshop_id: workshopId,
+                          booking_date: bookingDate,
+                          booking_time: bookingTime,
+                          master_id: masterId,
+                          additional_services: additionalServices,
+                      };
+              
+                       try {
+                          const response = await fetch('/create_booking/', {
+                              method: 'POST',
+                              headers: {
+                                  'Content-Type': 'application/json',
+                                  'X-CSRFToken': getCookie('csrftoken'),
+                              },
+                              body: JSON.stringify(data),
+                          });
+              
+                            const responseData = await response.json();
+              
+                            if (response.ok) {
+                              alert(responseData.message)
+                            } else {
+                                document.getElementById('error-message').textContent = responseData.message;
+                             }
+              
+                      } catch (error) {
+                          console.error('Ошибка при оформлении заказа:', error);
+                      }
+                  });
+              
+                 function getCookie(name) {
+                          let cookieValue = null;
+                          if (document.cookie && document.cookie !== '') {
+                              const cookies = document.cookie.split(';');
+                              for (let i = 0; i < cookies.length; i++) {
+                                  const cookie = cookies[i].trim();
+                                  // Does this cookie string begin with the name we want?
+                                  if (cookie.startsWith(name + '=')) {
+                                      cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                      break;
+                                  }
+                              }
+                          }
+                          return cookieValue;
+                      }
+              
+              
+                  fetch('/api/get_additional_services/')
+                      .then(response => response.json())
+                      .then(data => {
+                          const additionalServicesContainer = document.getElementById('additional-services-container');
+                          data.forEach(service => {
+                              const checkbox = document.createElement('input');
+                              checkbox.type = 'checkbox';
+                              checkbox.value = service.id;
+                              checkbox.id = `add-service-${service.id}`;
+                              const label = document.createElement('label');
+                              label.htmlFor = `add-service-${service.id}`;
+                              label.textContent = `${service.name} - ${service.price} ₽`;
+                              additionalServicesContainer.appendChild(checkbox);
+                              additionalServicesContainer.appendChild(label);
+                              additionalServicesContainer.appendChild(document.createElement('br'));
+                          });
+                      })
+                      .catch(error => console.error('Ошибка при загрузке дополнительных услуг:', error));
+                });
+              </script>
+{% endblock content %}

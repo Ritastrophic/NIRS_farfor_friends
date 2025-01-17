@@ -1,0 +1,24 @@
+{% extends "index.html" %}
+{% block content %} 
+    <div class="carousel-container products-page">
+        <h2>Наши мастерские</h2>
+        <div class="carousel-wrapper carousel-wrapper-product">
+            <div class="carousel carousel-product" style="transform: translateX(0px)">
+                {% for workshop in workshops %}
+                <div class="carousel-item">
+                        <a href="{% url 'workshop_detail' workshop.id %}" class="carousel-item-link">
+                            <div class="product-image-wrapper">
+                                <img src="{{ workshop.get_photo_url }}" alt="{{ workshop.name }}" class="product-image" />
+                            </div>
+                                <div class="product-info">
+                                    <h3>{{ workshop.name }}</h3>
+                                    <h3>Площадь: {{ workshop.area }} м^2</h3>
+                                    <p class="price">Цена: {{ workshop.price }} ₽</p>
+                                </div>
+                        </a>
+                        </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

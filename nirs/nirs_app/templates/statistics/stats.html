@@ -1,0 +1,12 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Статистика{% endblock title %}
+{% block content %}
+    <section id="products">
+        <ul>
+            <li><p><a href="{% url 'products_stats' %}">Статистика товаров</a></p></li>
+            <li><p><a href="{% url 'services_stats' %}">Статистика услуг</a></p></li>
+            <li><p><a href="{% url 'sales_stats' %}">Статистика продаж</a></p></li>
+        </ul>
+    </section>
+{% endblock content %}

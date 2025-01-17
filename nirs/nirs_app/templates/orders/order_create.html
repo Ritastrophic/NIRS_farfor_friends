@@ -1,0 +1,13 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Добавление заказа{% endblock title %}
+{% block content %}
+    <section id="products">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Создать заказ</button>
+        </form>
+        <hr/>
+    </section>
+{% endblock content %}

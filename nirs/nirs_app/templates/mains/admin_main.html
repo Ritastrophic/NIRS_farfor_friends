@@ -1,0 +1,40 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Главная администратора{% endblock title %}
+{% block content %}
+    <section id="about">
+        <h2>Популярные товары сейчас:</h2>
+        <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>ID</th>
+                    <th>Фото</th>
+                    <th>Название</th>
+                    <th>Остаток на складе</th>
+                    <th>Продано, шт.</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if top_products %}
+                    {% for data in top_products %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ data.id }}</td>
+                            <td>
+                                <img src="{{ data.get_photo_url }}" alt="{{ data.name }}" style="max-width: 100px; max-height: 100px;" />
+                            </td>
+                            <td><a href="{% url 'product_detail_admin' data.id %}">{{ data.name }}</a></td>
+                            <td>{{ data.current_quantity }}</td>
+                            <td>{{ data.order_count }}</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6">Список товаров пуст</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </section>
+{% endblock content %}

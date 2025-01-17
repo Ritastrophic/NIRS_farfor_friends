@@ -1,0 +1,112 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+{% block title %}Поставки{% endblock title %}
+{% block content %}
+    <section id="products">
+        <h2>Список поставок</h2>
+        <hr>
+        <button id="toggleFilters">Поиск по параметрам</button>
+<br>
+<br>
+<div id="filterForm" style="display: none;">
+    <form method="get" action="{% url 'supplies_list' %}">
+        <label for="date_q">Дата:</label>
+        <input type="date" name="date_q" value="{{ date_q }}">
+        <br><br>
+
+        <label for="seller">Продавец:</label>
+        <select name="seller" id="seller">
+            <option value="">Все продавцы</option>
+            {% for seller in sellers %}
+            <option value="{{ seller.id }}" {% if request.GET.seller|stringformat:"s" == seller.id|stringformat:"s" %}selected{% endif %}>
+                {{ seller.user.first_name }} {{ seller.user.last_name }}
+            </option>
+            {% endfor %}
+        </select>
+        <br><br>
+
+        <label for="material">Сырье:</label>
+        <select name="material" id="material">
+            <option value="">Все сырье</option>
+            {% for material in materials %}
+            <option value="{{ material.id }}" {% if request.GET.material|stringformat:"s" == material.id|stringformat:"s" %}selected{% endif %}>
+                {{ material.name }}
+            </option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <button type="submit">Поиск</button>
+    </form>
+</div>
+<hr>
+        <table class="supplies-table">
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>ID поставки</th>
+                    <th>Дата</th>
+                    <th>Продавец</th>
+                    <th>Материалы</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if dataset %}
+                    {% for data in dataset %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                             <td>
+                                 <a href="{% url 'supply_detail_admin' data.id %}">{{ data.id }}</a>
+                             </td>
+                            <td>{{ data.supply_date }}</td>
+                            <td>{{ data.seller }}</td>
+                            <td>
+                                <ul>
+                                   {% for material in data.supplied_materials.all %}
+                                        <li>{{ material.material }} x {{ material.quantity }}</li>
+                                    {% endfor %}
+                                </ul>
+                                <td style="border: 1px solid rgb(78, 0, 173); padding: 8px;">
+                                    <a href="{% url 'supply_update' data.id %}">Изменить</a> | 
+                                    <a href="{% url 'supply_delete' data.id %}">Удалить</a>
+                                </td>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5">Список поставок пуст</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        <p><a href="{% url 'supply_create' %}">Добавить поставку</a></p><br>
+    </section>
+    <style>
+         .supplies-table {
+             width: 100%;
+             border-collapse: collapse;
+            border: 1px solid black;
+           }
+           .supplies-table th, .supplies-table td {
+               border: 1px solid rgb(78, 0, 173);
+                padding: 8px;
+            }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleFiltersBtn = document.getElementById('toggleFilters');
+            const filterForm = document.getElementById('filterForm');
+
+            toggleFiltersBtn.addEventListener('click', function() {
+                if (filterForm.style.display === 'none') {
+                    filterForm.style.display = 'block';
+                    toggleFiltersBtn.textContent = 'Скрыть';
+                } else {
+                    filterForm.style.display = 'none';
+                    toggleFiltersBtn.textContent = 'Поиск по параметрам';
+                }
+            });
+        });
+    </script>
+{% endblock content %}

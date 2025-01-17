@@ -1,0 +1,25 @@
+{% extends "personal/user_personal.html" %}
+{% load static %}
+
+{% block title %}Изменить заказ{% endblock title %}
+
+{% block content %}
+    <section id="products">
+        <h2>Изменить заказ #{{ order.id }}</h2>
+        <form method="post">
+            {% csrf_token %}
+            <h3>Данные записи:</h3>
+            {{ appointment_form.as_p }}
+            <h3>Данные заказа:</h3>
+            {{ order_form.as_p }}
+              <h3>Дополнительные услуги:</h3>
+              {{ formset.management_form }}
+              {% for form in formset %}
+                  {{ form.as_p }}
+              {% endfor %}
+            <button type="submit">Сохранить изменения</button>
+        </form>
+           <hr/>
+             <a href="{% url 'order_detail_admin' order.id %}">Назад к заказу</a>
+    </section>
+{% endblock content %}
